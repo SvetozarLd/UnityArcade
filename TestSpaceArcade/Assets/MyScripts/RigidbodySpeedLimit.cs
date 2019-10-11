@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class RigidbodySpeedLimit : MonoBehaviour
 {
     public float Speed;
@@ -15,11 +16,6 @@ public class RigidbodySpeedLimit : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-       // rb.velocity = Vector3.ClampMagnitude(rb.velocity, MaxSpeed);
        rb.velocity = rb.velocity.normalized* Speed;
-        //if (rb.velocity.magnitude > MaxSpeed)
-        //{
-        //    rb.velocity = Vector3.ClampMagnitude(rb.velocity, MaxSpeed);
-        //}
     }
 }

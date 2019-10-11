@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyTrajectory : MonoBehaviour
 {
     public int Trajectory = 0;

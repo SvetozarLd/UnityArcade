@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyShotScript : MonoBehaviour
 {
     public Vector3 Target;

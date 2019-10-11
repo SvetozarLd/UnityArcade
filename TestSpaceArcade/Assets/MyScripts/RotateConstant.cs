@@ -32,7 +32,6 @@ public class RotateConstant : MonoBehaviour
         while (ObjectRotate)
         {
             transform.Rotate(new Vector3(rx, ry, rz) * Time.deltaTime * speed);
-            //transform.position = new Vector3(transform.position.x, transform.position.y, -10 );// Vector3.Lerp(transform.position, new Vector3(controllerX, controllerY, -20), Time.deltaTime * MoovingSpeed);
             yield return null;
         }
     }

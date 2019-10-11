@@ -15,10 +15,4 @@ public class UIScores : MonoBehaviour
     {
         MainSettings.myUI.Scores.text = "Scores: " + MainSettings.Players.Scores.ToString();
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        //GetComponent<Text>().text = "Scores: " + MainSettings.Players.Scores.ToString();
-    }
 }

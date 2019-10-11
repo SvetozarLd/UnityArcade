@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 static public class MainSettings
 {
     static public bool NotPause { get; set; }

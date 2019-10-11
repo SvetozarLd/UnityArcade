@@ -13,9 +13,6 @@ public class RotateUpfrade : MonoBehaviour
 
     void Start()
     {
-        //rx = rotateRandomize(-1.0f, 1.0f);
-        //ry = rotateRandomize(-1.0f, 1.0f);
-        //rz = rotateRandomize(-1.0f, 1.0f);
         rx = 1; ry = 1; rz = 1;
         StartCoroutine(objectRotation());
     }
