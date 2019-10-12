@@ -7,10 +7,6 @@ public class ScenarioScript : MonoBehaviour
     [Space]
     public GameObject Background;
     [Space]
-    public GameObject LaserUP;
-    public GameObject Bomb;
-    public GameObject Life;
-    [Space]
     public GameObject Enemy01;
     public GameObject Enemy02;
     public GameObject Enemy03;
@@ -43,6 +39,8 @@ public class ScenarioScript : MonoBehaviour
 
     void Start()
     {
+        MainSettings.Players.Invulnerability = false;
+
         SingleEnemy en;
         List<SingleEnemy> lst;
 
@@ -62,6 +60,14 @@ public class ScenarioScript : MonoBehaviour
         en = new SingleEnemy(Enemy02, 0.2f, 10, 1, 4, new Vector3(0, 15, -10));
         lst.Add(en);
         Checkpoints.Add(390, new EnemyInstance(lst, true));
+        #endregion
+
+        #region Creating Scenario1
+        lst = new List<SingleEnemy>();
+        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
+        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
+        lst.Add(en);
+        Checkpoints.Add(385, new EnemyInstance(lst, true));
         #endregion
         #region Creating Scenario1
         lst = new List<SingleEnemy>();
@@ -84,16 +90,14 @@ public class ScenarioScript : MonoBehaviour
             en = new SingleEnemy(Enemy03, 0f, 1, 4, 1, new Vector3(i, 15, -10));
             lst.Add(en);
         }
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 4, 6, new Vector3(0, 15, -10)));
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 4, 7, new Vector3(0, 15, -10)));
         Checkpoints.Add(360, new EnemyInstance(lst, true));
         #endregion
         #region Creating Scenario2
 
         lst = new List<SingleEnemy>();
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 4, 6, new Vector3(0, 15, -10)));
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 4, 7, new Vector3(0, 15, -10)));
-        Checkpoints.Add(361, new EnemyInstance(lst, true));
+        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
+        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
+        Checkpoints.Add(358, new EnemyInstance(lst, true));
         #endregion
 
         //background = Background.gameObject.transform.Find("BackSpace01").gameObject;
@@ -157,13 +161,13 @@ public class ScenarioScript : MonoBehaviour
                         StartCoroutine(CreateEnemy(en));
                     }
                 }
-                UpgradeTmp = MainSettings.Players.Scores / 100;
-                //Debug.Log(MainSettings.Players.Scores + ":"+ TakeUpgrade.ToString() + ":"+TakeUpgradeTmp.ToString());
-                if (UpgradeTmp > laserUpgradesCount)
-                {
-                    GameObject go = Instantiate(LaserUP, new Vector3(Random.Range(-20, 20), 15, 20), Quaternion.Euler(0, 0, 0));
-                    laserUpgradesCount++;
-                }
+                //UpgradeTmp = MainSettings.Players.Scores / 100;
+                ////Debug.Log(MainSettings.Players.Scores + ":"+ TakeUpgrade.ToString() + ":"+TakeUpgradeTmp.ToString());
+                //if (UpgradeTmp > laserUpgradesCount)
+                //{
+                //    GameObject go = Instantiate(LaserUP, new Vector3(Random.Range(-20, 20), 15, 20), Quaternion.Euler(0, 0, 0));
+                //    laserUpgradesCount++;
+                //}
             }
             yield return null;
         }

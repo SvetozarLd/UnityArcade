@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Boss01Script : MonoBehaviour
 {
-    public GameObject Player;
+    private GameObject Player;
     private GameObject shipMech;
     private Bezie bezie;
     public Vector2 LeftDownCorner;
@@ -16,6 +16,7 @@ public class Boss01Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Player = MainSettings.Players.Player;
         shipMech = transform.GetChild(0).gameObject;
         bezie = new Bezie();
         StartCoroutine(Mooving());
@@ -36,6 +37,7 @@ public class Boss01Script : MonoBehaviour
         Vector2[] BeziePosition = new Vector2[4];
         while (true)
         {
+            while (MainSettings.NotPause) { yield return null; }
             BeziePosition[0] = new Vector2(transform.position.x, transform.position.y);
             BeziePosition[1] = new Vector2(Random.Range(LeftDownCorner.x, RightUpCorner.x), Random.Range(LeftDownCorner.y, RightUpCorner.y));
             BeziePosition[2] = new Vector2(Random.Range(LeftDownCorner.x, RightUpCorner.x), Random.Range(LeftDownCorner.y, RightUpCorner.y));
@@ -44,6 +46,7 @@ public class Boss01Script : MonoBehaviour
             float dt = 1f / Steps;
             for (int i = 0; i <= Steps; i++)
             {
+                while (MainSettings.NotPause) { yield return null; }
                 NewPlayerPosition = bezie.GetBezie(t, BeziePosition);
                 transform.position = new Vector3(NewPlayerPosition.x, NewPlayerPosition.y, transform.position.z);
                 t += dt;
@@ -58,9 +61,11 @@ public class Boss01Script : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
+            while (MainSettings.NotPause) { yield return null; }
             yield return new WaitForSeconds(TimeFreezing / 8);
             GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
             go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
+            go.GetComponent<EnemyShotScript>().Speed = 30;
         }
     }
 }

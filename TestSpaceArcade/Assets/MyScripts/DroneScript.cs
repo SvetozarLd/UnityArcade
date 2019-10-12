@@ -11,10 +11,15 @@ public class DroneScript : MonoBehaviour
     private int CornerCounter = 0;
     private Bezie bezie;
     // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         Player = MainSettings.Players.Player;
         bezie = new Bezie();
+    }
+
+    public void StartDrone()
+    {
         StartCoroutine(StartInitiate());
     }
 
@@ -30,6 +35,7 @@ public class DroneScript : MonoBehaviour
     public float TimeFreezing = 2;
     IEnumerator Mooving()
     {
+        while (!MainSettings.NotPause) { yield return null; }
         float t = 0f;
         Vector2 playerPosition = new Vector2(Player.transform.position.x, Player.transform.position.y);
         Vector2[] tmp;
@@ -47,6 +53,7 @@ public class DroneScript : MonoBehaviour
             tmp = GetBezieDots(playerPosition);
             for (int i = 0; i <= Steps; i++)
             {
+                while (!MainSettings.NotPause) { yield return null; }
                 NewPlayerPosition = bezie.GetBezie(t, tmp);
                 transform.position = new Vector3(NewPlayerPosition.x, NewPlayerPosition.y, transform.position.z);
                 t += dt;
@@ -99,6 +106,7 @@ public class DroneScript : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            while (!MainSettings.NotPause) { yield return null; }
             yield return new WaitForSeconds(TimeFreezing / 4);
             GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
             go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
@@ -107,6 +115,7 @@ public class DroneScript : MonoBehaviour
 
     IEnumerator StartInitiate()
     {
+        while (!MainSettings.NotPause) { yield return null; }
         float t = 0f;
         Vector2[] BeziePosition = new Vector2[4];
         Vector3 NewPlayerPosition;
@@ -115,6 +124,7 @@ public class DroneScript : MonoBehaviour
         BeziePosition[0] = new Vector2(transform.position.x, transform.position.y);
         BeziePosition[1] = new Vector2(transform.position.x, RightUpCorner.y);
         BeziePosition[2] = new Vector2(transform.position.x, RightUpCorner.y);
+
         if (FromLeft)
         {
             CornerCounter = 0;
@@ -127,6 +137,7 @@ public class DroneScript : MonoBehaviour
         }
         for (int i = 0; i <= Steps; i++)
         {
+            while (!MainSettings.NotPause) { yield return null; }
             NewPlayerPosition = bezie.GetBezie(t, BeziePosition);
             transform.position = new Vector3(NewPlayerPosition.x, NewPlayerPosition.y, transform.position.z);
             t += dt;

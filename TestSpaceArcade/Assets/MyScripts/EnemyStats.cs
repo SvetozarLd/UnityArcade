@@ -24,7 +24,6 @@ public class EnemyStats : MonoBehaviour
             Destroy(gameObject, 0);
             Destroy(go, 4f);
             MainSettings.Players.Scores += Scores;
-            MainSettings.myUI.Scores.text = "Scores: " + MainSettings.Players.Scores.ToString();
         }
     }
 }

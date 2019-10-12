@@ -18,10 +18,13 @@ public class UpgradeSphere : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        offsetX += speedX;
-        offsetY += speedY;
-        if (offsetX > 1) { offsetX -= 1; } else { if (offsetX <-1) { offsetX += 1; } }
-        if (offsetY > 1) { offsetY -= 1; } else { if (offsetY < -1) { offsetY += 1; } }
-        rend.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
+        if (MainSettings.NotPause)
+        {
+            offsetX += speedX;
+            offsetY += speedY;
+            if (offsetX > 1) { offsetX -= 1; } else { if (offsetX < -1) { offsetX += 1; } }
+            if (offsetY > 1) { offsetY -= 1; } else { if (offsetY < -1) { offsetY += 1; } }
+            rend.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
+        }
     }
 }

@@ -12,35 +12,38 @@ public class EnemyTrajectory : MonoBehaviour
     private void Start()
     {
         Player = MainSettings.Players.Player;
-            switch (Trajectory)
-            {
-                case 0:
-                    transform.position = new Vector3(Random.Range(-9, 10) * 3, 19, -10);
-                    speed = 1f;
-                    break;
-                case 1:
-                    //transform.position = new Vector3(0, 15, -10);
-                    speed = 5f;
-                    break;
-                case 2:
-                    //transform.position = new Vector3(-15, 15, -10);
-                    speed = 5f;
-                    break;
-                case 3:
-                    //transform.position = new Vector3(15, 15, -10);
-                    speed = 5f;
-                    break;
-                case 4:
-                    //transform.position = new Vector3(15, 15, -10);
-                    speed = 0.5f;
-                    break;
-                case 6:
-                    GetComponent<DroneScript>().FromLeft = true;
-                    break;
-                case 7:
-                    GetComponent<DroneScript>().FromLeft = false;
-                    break;
-            }
+        switch (Trajectory)
+        {
+            case 0:
+                transform.position = new Vector3(Random.Range(-9, 10) * 3, 19, -10);
+                speed = 1f;
+                break;
+            case 1:
+                //transform.position = new Vector3(0, 15, -10);
+                speed = 5f;
+                break;
+            case 2:
+                //transform.position = new Vector3(-15, 15, -10);
+                speed = 5f;
+                break;
+            case 3:
+                //transform.position = new Vector3(15, 15, -10);
+                speed = 5f;
+                break;
+            case 4:
+                //transform.position = new Vector3(15, 15, -10);
+                speed = 0.5f;
+                break;
+            case 6:
+                gameObject.transform.GetComponent<DroneScript>().FromLeft = true;
+                gameObject.transform.GetComponent<DroneScript>().StartDrone();
+
+                break;
+            case 7:
+                gameObject.transform.GetComponent<DroneScript>().FromLeft = false;
+                gameObject.transform.GetComponent<DroneScript>().StartDrone();
+                break;
+        }
     }
 
     // Update is called once per frame

@@ -5,14 +5,9 @@ using UnityEngine.UI;
 
 public class UIScores : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        MainSettings.myUI.Scores = GetComponent<Text>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        MainSettings.myUI.Scores.text = "Scores: " + MainSettings.Players.Scores.ToString();
+        MainSettings.Players.ScoresText = GetComponent<Text>();
+        MainSettings.Players.ScoresText.text = MainSettings.Players.Scores.ToString();
     }
 }

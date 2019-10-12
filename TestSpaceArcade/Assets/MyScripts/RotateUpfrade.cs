@@ -27,6 +27,7 @@ public class RotateUpfrade : MonoBehaviour
     {
         while (ObjectRotate)
         {
+            while (!MainSettings.NotPause) { yield return null; }
             transform.Rotate(new Vector3(rx, ry, rz) * Time.deltaTime * speed);
             yield return null;
         }
