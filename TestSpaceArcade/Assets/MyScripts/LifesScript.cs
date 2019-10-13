@@ -7,8 +7,8 @@ public class LifesScript : MonoBehaviour
     public Vector3 Position;
     public Vector3 Rotation;
     public float Speed;
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
         transform.localRotation = Quaternion.Euler(new Vector3(-230, 100, 50));
         transform.localScale = new Vector3(0, 0, 0);

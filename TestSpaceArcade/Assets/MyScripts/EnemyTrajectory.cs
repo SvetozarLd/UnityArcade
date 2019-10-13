@@ -43,6 +43,7 @@ public class EnemyTrajectory : MonoBehaviour
                 gameObject.transform.GetComponent<DroneScript>().FromLeft = false;
                 gameObject.transform.GetComponent<DroneScript>().StartDrone();
                 break;
+
         }
     }
 
@@ -90,7 +91,7 @@ public class EnemyTrajectory : MonoBehaviour
             if (transform.position.y < -20 || transform.position.y > 20 || transform.position.x < -35 || transform.position.x > 35)
             {
                 MainSettings.Enemylist.Remove(gameObject);
-                Destroy(gameObject, 0);
+                GetComponent<PoolObject>().ReturnToPool();
             }
         }
 

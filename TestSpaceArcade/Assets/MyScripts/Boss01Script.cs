@@ -13,11 +13,19 @@ public class Boss01Script : MonoBehaviour
     public int Steps = 100;
     public GameObject ShotBullet;
     public float TimeFreezing = 4;
+    GameObject tmp;
+
+
+    GameObject turret01;
+    GameObject turret02;
     // Start is called before the first frame update
     void Start()
     {
         Player = MainSettings.Players.Player;
-        shipMech = transform.GetChild(0).gameObject;
+        tmp = transform.GetChild(0).gameObject;
+        shipMech = transform.GetChild(1).gameObject;
+        turret01 = transform.GetChild(1).gameObject.transform.GetChild(0).gameObject;
+        turret02 = transform.GetChild(1).gameObject.transform.GetChild(1).gameObject;
         bezie = new Bezie();
         StartCoroutine(Mooving());
     }
@@ -25,7 +33,8 @@ public class Boss01Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        shipMech.transform.LookAt(Player.transform.position);
+        tmp.transform.LookAt(Player.transform.position);
+        shipMech.transform.rotation = Quaternion.Lerp(shipMech.transform.rotation, tmp.transform.rotation, 0.1f * Time.time);
     }
 
     IEnumerator Mooving()
@@ -37,7 +46,7 @@ public class Boss01Script : MonoBehaviour
         Vector2[] BeziePosition = new Vector2[4];
         while (true)
         {
-            while (MainSettings.NotPause) { yield return null; }
+            while (!MainSettings.NotPause) { yield return null; }
             BeziePosition[0] = new Vector2(transform.position.x, transform.position.y);
             BeziePosition[1] = new Vector2(Random.Range(LeftDownCorner.x, RightUpCorner.x), Random.Range(LeftDownCorner.y, RightUpCorner.y));
             BeziePosition[2] = new Vector2(Random.Range(LeftDownCorner.x, RightUpCorner.x), Random.Range(LeftDownCorner.y, RightUpCorner.y));
@@ -46,7 +55,7 @@ public class Boss01Script : MonoBehaviour
             float dt = 1f / Steps;
             for (int i = 0; i <= Steps; i++)
             {
-                while (MainSettings.NotPause) { yield return null; }
+                while (!MainSettings.NotPause) { yield return null; }
                 NewPlayerPosition = bezie.GetBezie(t, BeziePosition);
                 transform.position = new Vector3(NewPlayerPosition.x, NewPlayerPosition.y, transform.position.z);
                 t += dt;
@@ -61,11 +70,10 @@ public class Boss01Script : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            while (MainSettings.NotPause) { yield return null; }
+            while (!MainSettings.NotPause) { yield return null; }
             yield return new WaitForSeconds(TimeFreezing / 8);
-            GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
-            go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
-            go.GetComponent<EnemyShotScript>().Speed = 30;
+            PoolManager.GetObject(ShotBullet.transform.name, turret01.transform.position, Quaternion.identity);
+            PoolManager.GetObject(ShotBullet.transform.name, turret02.transform.position, Quaternion.identity);
         }
     }
 }

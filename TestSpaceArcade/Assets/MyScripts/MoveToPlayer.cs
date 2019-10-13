@@ -19,8 +19,8 @@ public class MoveToPlayer : MonoBehaviour
         Cursor.visible = false;
     }
     private void Update()
-    {
-        if (Player != null && MainSettings.NotPause)
+    {        
+        if (Player != null && MainSettings.NotPause && MainSettings.Players.UnLockController)
         {
             CoordinateX = Player.transform.position.x;
             if (CoordinateX < MaxMinCoordinates.x) { CoordinateX = MaxMinCoordinates.x; }

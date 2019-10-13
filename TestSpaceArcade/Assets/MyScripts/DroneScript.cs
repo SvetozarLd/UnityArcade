@@ -108,8 +108,10 @@ public class DroneScript : MonoBehaviour
         {
             while (!MainSettings.NotPause) { yield return null; }
             yield return new WaitForSeconds(TimeFreezing / 4);
-            GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
-            go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
+            //GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
+            //GameObject go = PoolManager.GetObject(ShotBullet.transform.name, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
+            PoolManager.GetObject(ShotBullet.transform.name, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
+            //go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
         }
     }
 

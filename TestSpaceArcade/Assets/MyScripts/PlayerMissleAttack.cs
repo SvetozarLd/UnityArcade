@@ -7,53 +7,60 @@ public class PlayerMissleAttack : MonoBehaviour
 {
 
     public GameObject Traejtory;
-    public GameObject Explosion;
+    public float Speed = 15;
 
-    private GameObject Player;
-    private GameObject enemy;    
-    private GameObject childrenMesh;
 
+    GameObject Player;
+    GameObject enemy;
+    GameObject childrenMesh;
+    PoolObject po;
+    EnemyStats enemyStats;
+    private void Awake()
+    {
+        po = GetComponent<PoolObject>();
+        childrenMesh = transform.GetChild(0).gameObject;
+    }
     // Start is called before the first frame update
     void Start()
     {
         Player = MainSettings.Players.Player;
         enemy = null;
-        childrenMesh = transform.GetChild(0).gameObject;
         searcher = false;
         StartCoroutine(EnemySelector());
 
+    }
+
+    private void OnEnable()
+    {
+        enemy = null;
     }
     private void OnTriggerEnter(Collider collider)
     {
         switch (collider.gameObject.tag)
         {
             case "Enemy":
-                collider.transform.parent.gameObject.GetComponent<EnemyStats>().HP = -1;
-                enemy = null;
+                EnemyStats tmp = collider.transform.parent.gameObject.GetComponent<EnemyStats>();
+                tmp.HP = tmp.HP - MainSettings.Weapon.Rocket.Damage;
                 MainSettings.Enemylist.Remove(collider.transform.parent.gameObject);
-                Bang();
+                enemy = null;
+                po.ReturnToPool();
+                PoolManager.GetObject("ExplosionParticle", transform.position, Quaternion.identity);
                 break;
         }
-    }
-    public void Bang()
-    {
-        GameObject go = Instantiate(Explosion, transform.position, Quaternion.identity);
-        Destroy(gameObject, 0);
-        Destroy(go, 4f);
     }
 
     void Update()
     {
         if (MainSettings.NotPause)
         {
-            if (enemy != null && enemy.GetComponent<EnemyStats>().HP > 0)
+            if (enemy != null && enemyStats.HP > 0)
             {
                 childrenMesh.transform.LookAt(new Vector3(enemy.transform.position.x, enemy.transform.position.y, transform.position.z));
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(enemy.transform.position.x, enemy.transform.position.y, transform.position.z), 15 * Time.deltaTime);
             }
             else
             {
-                transform.position += childrenMesh.transform.forward * Time.deltaTime * 15;
+                transform.position += childrenMesh.transform.forward * Time.deltaTime * Speed;
                 if (searcher)
                 {
                     searcher = false;
@@ -61,11 +68,11 @@ public class PlayerMissleAttack : MonoBehaviour
                 }
             }
         }
-        if (transform.position.x < -40 || transform.position.x > 40 || transform.position.y < -20 || transform.position.y > 20){Destroy(gameObject, 0);}
-        
+        if (transform.position.x < -40 || transform.position.x > 40 || transform.position.y < -20 || transform.position.y > 20) { po.ReturnToPool(); }
+
     }
 
-    private bool searcher = false;
+    bool searcher = false;
     IEnumerator EnemySelector()
     {
         GameObject tgo = null;
@@ -76,33 +83,20 @@ public class PlayerMissleAttack : MonoBehaviour
             GameObject[] lst = MainSettings.Enemylist.ToArray();
             foreach (GameObject go in lst)
             {
-                tmp = Vector3.Distance(new Vector3(go.transform.position.x, go.transform.position.y, transform.position.z), transform.position);
-                if (tmp < dist) { tgo = go; dist = tmp; }
                 yield return null;
+                if (go != null)
+                {
+                    tmp = Vector3.Distance(new Vector3(go.transform.position.x, go.transform.position.y, transform.position.z), transform.position);
+                    if (tmp < dist) { tgo = go; dist = tmp; }
+                }
             }
-            enemy = tgo;
+            if (tgo != null)
+            {
+                enemy = tgo;
+                enemyStats = enemy.GetComponent<EnemyStats>();
+            }
+
         }
         searcher = true;
     }
-
-
-    //private GameObject SelectAim()
-    //{
-    //    if (MainSettings.Enemylist != null)
-    //    {
-    //        GameObject tgo = null;
-    //        float dist = 1000;
-    //        foreach (GameObject go in MainSettings.Enemylist)
-    //        {
-    //            if (dist > Vector3.Distance(new Vector3(go.transform.position.x, go.transform.position.y, transform.position.z), transform.position)) { tgo = go; }
-    //        }
-
-    //        return tgo;
-    //    }
-    //    else
-    //    {
-    //        return null;
-    //    }
-
-    //}
 }

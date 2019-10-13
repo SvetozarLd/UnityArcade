@@ -9,14 +9,19 @@ public class BombScript : MonoBehaviour
     private float speed;
     private float radius;
     private Camera mainCamera;
-    public GameObject Explosion;
     private bool ended = false;
-    void Start()
+    PoolObject po;
+    private void Awake()
     {
+        po = GetComponent<PoolObject>();
         mainCamera = MainSettings.MainCamera;
         speed = MainSettings.Weapon.Bomb.Speed;
-        radius = MainSettings.Weapon.Bomb.Diameter/2;
-        transform.localScale = new Vector3(MainSettings.Weapon.Bomb.Size, MainSettings.Weapon.Bomb.Size, MainSettings.Weapon.Bomb.Size);
+        radius = MainSettings.Weapon.Bomb.Diameter / 2;
+    }
+
+    private void OnEnable()
+    {
+        ended = false;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -26,7 +31,7 @@ public class BombScript : MonoBehaviour
             case "Enemy":
                 if (!ended)
                 {
-                    CreateExplosion(Explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
+                    CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
                 }
                 break;
         }
@@ -37,25 +42,33 @@ public class BombScript : MonoBehaviour
         if (MainSettings.NotPause)
         {
             Vector3 point = mainCamera.WorldToViewportPoint(new Vector2(transform.position.x, transform.position.y + radius)); //Записываем положение объекта к границам камеры, X и Y это будут как раз верхние и нижние границы камеры
-            if (point.y > 1f)
+            if (point.y >= 1f)
             {
                 if (!ended)
                 {
-                    CreateExplosion(Explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
+                    CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
                 }
             }
             else { transform.position += transform.forward * Time.deltaTime * speed; }
         }
     }
-    void CreateExplosion(GameObject weapon, Vector3 pos, Vector3 rot) //translating 'pooled' lazer shot to the defined position in the defined rotation
+    void CreateExplosion(string explosion, Vector3 pos, Vector3 rot) //translating 'pooled' lazer shot to the defined position in the defined rotation
     {
         ended = true;
-        GameObject go = Instantiate(weapon, pos, Quaternion.Euler(rot));
-        foreach (GameObject goEnemy in MainSettings.Enemylist)
+        po.ReturnToPool();
+        PoolManager.GetObject("ExplosionBig", transform.position, Quaternion.identity);
+        if (MainSettings.Enemylist != null)
         {
-            if (goEnemy.tag == "Enemy") { goEnemy.GetComponent<EnemyStats>().HP = -1; }
+            GameObject[] lst = MainSettings.Enemylist.ToArray();
+            EnemyStats tmp;
+            foreach (GameObject goEnemy in lst)
+            {
+                if (goEnemy != null && goEnemy.tag == "Enemy")
+                {
+                    tmp = goEnemy.GetComponent<EnemyStats>();
+                    tmp.HP = tmp.HP - MainSettings.Weapon.Bomb.Damage;
+                }
+            }
         }
-        Destroy(gameObject, 0);
-        Destroy(go, 4f);
     }
 }

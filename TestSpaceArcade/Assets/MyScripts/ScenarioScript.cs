@@ -13,6 +13,8 @@ public class ScenarioScript : MonoBehaviour
     public GameObject Enemy04;
     public GameObject Enemy05;
     public GameObject Enemy06;
+    public GameObject Enemy07;
+    public GameObject Enemy08;
     [Space]
 
     private int gamePosition = 0;
@@ -55,34 +57,51 @@ public class ScenarioScript : MonoBehaviour
         //#endregion
 
 
-        #region Creating Scenario1
+
+        #region Creating Scenario (sin center)
         lst = new List<SingleEnemy>();
         en = new SingleEnemy(Enemy02, 0.2f, 10, 1, 4, new Vector3(0, 15, -10));
         lst.Add(en);
         Checkpoints.Add(390, new EnemyInstance(lst, true));
         #endregion
 
-        #region Creating Scenario1
+        #region Creating Scenario (droids)
         lst = new List<SingleEnemy>();
         lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
         lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
         lst.Add(en);
         Checkpoints.Add(385, new EnemyInstance(lst, true));
         #endregion
-        #region Creating Scenario1
+
+        #region Creating Scenario (sin left)
         lst = new List<SingleEnemy>();
         en = new SingleEnemy(Enemy02, 0.2f, 10, 2, 4, new Vector3(-15, 15, -10));
         lst.Add(en);
         Checkpoints.Add(380, new EnemyInstance(lst, true));
         #endregion
-        #region Creating Scenario1
+
+        #region Creating Scenario (sin right)
         lst = new List<SingleEnemy>();
         en = new SingleEnemy(Enemy02, 0.2f, 10, 3, 4, new Vector3(15, 15, -5));
         lst.Add(en);
         Checkpoints.Add(370, new EnemyInstance(lst, true));
         #endregion
 
-        #region Creating Scenario2
+        #region Creating Scenario (bezie01 Left)
+        lst = new List<SingleEnemy>();
+        en = new SingleEnemy(Enemy06, 0.25f, 20, 8, 4, new Vector3(15, 15, -5));
+        lst.Add(en);
+        Checkpoints.Add(360, new EnemyInstance(lst, true));
+        #endregion
+
+        #region Creating Scenario (bezie01 right)
+        lst = new List<SingleEnemy>();
+        en = new SingleEnemy(Enemy07, 0.25f, 20, 8, 4, new Vector3(15, 15, -5));
+        lst.Add(en);
+        Checkpoints.Add(350, new EnemyInstance(lst, true));
+        #endregion
+
+        #region Creating Scenario (Wall)
 
         lst = new List<SingleEnemy>();
         for (int i = -36; i < 36; i = i + 3)
@@ -90,14 +109,16 @@ public class ScenarioScript : MonoBehaviour
             en = new SingleEnemy(Enemy03, 0f, 1, 4, 1, new Vector3(i, 15, -10));
             lst.Add(en);
         }
-        Checkpoints.Add(360, new EnemyInstance(lst, true));
+        Checkpoints.Add(340, new EnemyInstance(lst, true));
         #endregion
-        #region Creating Scenario2
+        #region Creating Scenario (droids)
 
         lst = new List<SingleEnemy>();
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
-        lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
-        Checkpoints.Add(358, new EnemyInstance(lst, true));
+        //lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
+        //lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
+        lst.Add(new SingleEnemy(Enemy05, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
+        lst.Add(new SingleEnemy(Enemy05, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
+        Checkpoints.Add(338, new EnemyInstance(lst, true));
         #endregion
 
         //background = Background.gameObject.transform.Find("BackSpace01").gameObject;
@@ -150,7 +171,6 @@ public class ScenarioScript : MonoBehaviour
             if (MainSettings.NotPause)
             {
                 gamePosition = Mathf.RoundToInt(Background.transform.position.y);
-                //Debug.Log(gamePosition);
                 EnemyInstance item;
                 Checkpoints.TryGetValue(gamePosition, out item);
                 if (item != null && item.waiting)
@@ -179,8 +199,9 @@ public class ScenarioScript : MonoBehaviour
         for (int i = 0; i < enemy.count; i++)
         {
             while (!MainSettings.NotPause) { yield return null; }
-            GameObject go = Instantiate(enemy.enemyObj, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            component = go.GetComponent<EnemyTrajectory>();
+            //GameObject go = Instantiate(enemy.enemyObj, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            GameObject go = PoolManager.GetObject(enemy.enemyObj.name, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            component = go.transform.GetComponent<EnemyTrajectory>();
             if (component != null)
             {
                 component.Trajectory = enemy.trajectory;
@@ -192,7 +213,7 @@ public class ScenarioScript : MonoBehaviour
             else
             {
                 MainSettings.Enemylist.Remove(go);
-                Destroy(go, 0);
+                go.GetComponent<PoolObject>().ReturnToPool();
                 yield break;
             }
         }

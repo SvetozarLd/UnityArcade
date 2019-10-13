@@ -11,16 +11,16 @@ public class PlayerController : MonoBehaviour
     public int RotateAngle = 45;
     public Vector2 MinMaxWidth = new Vector2(-40, 40);
     public Vector2 MinMaxHeight = new Vector2(-13, 13);
-    [Space]
-    public GameObject Laser;
-    public GameObject Bomb;
-    public GameObject Rocket;
+    //[Space]
+    //public GameObject Laser;
+    //public GameObject Bomb;
+    //public GameObject Rocket;
     [Space]
     public GameObject LaserUP;
     public GameObject RocketUP;
     public GameObject BombUP;
     public GameObject LifeUP;
-    
+
     private void Awake()
     {
         MainSettings.Players.Player = gameObject;
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (MainSettings.NotPause)
+        if (MainSettings.NotPause && MainSettings.Players.UnLockController)
         {
             controllerX = transform.position.x + Input.GetAxis("Mouse X");
             controllerY = transform.position.y + Input.GetAxis("Mouse Y");
@@ -40,8 +40,8 @@ public class PlayerController : MonoBehaviour
             if (controllerX > transform.position.x + 0.1f) { transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-90, -RotateAngle, 0), Time.deltaTime * RotateSpeed); } else { if (controllerX < transform.position.x - 0.01f) { transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-90, RotateAngle, 0), Time.deltaTime * RotateSpeed); } else { transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-90, 0, 0), Time.deltaTime * RotateSpeed); } }
             transform.position = Vector3.Lerp(transform.position, new Vector3(controllerX, controllerY, -20), Time.deltaTime * MoovingSpeed);
 
-            if (Input.GetMouseButtonDown(0) && MainSettings.Players.RocketCount > 0) { MainSettings.Players.RocketCount--; CreateNotMainShot(Rocket, new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), new Vector3(-90, 0, 0)); }
-            if (Input.GetMouseButtonDown(1) && MainSettings.Players.NuclearCount > 0) { MainSettings.Players.NuclearCount--; CreateNotMainShot(Bomb, new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), new Vector3(-90, 0, 0)); }
+            if (Input.GetMouseButtonDown(0) && MainSettings.Players.RocketCount > 0) { MainSettings.Players.RocketCount--; CreateNotMainShot("MissleShot", new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), new Vector3(-90, 0, 0)); }
+            if (Input.GetMouseButtonDown(1) && MainSettings.Players.NuclearCount > 0) { MainSettings.Players.NuclearCount--; CreateNotMainShot("Bomb", new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), new Vector3(-90, 0, 0)); }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -49,6 +49,11 @@ public class PlayerController : MonoBehaviour
             if (MainSettings.NotPause) { MainSettings.NotPause = false; } else { MainSettings.NotPause = true; }
         }
         #region ForTesting
+
+
+
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (MainSettings.Players.Invulnerability) { MainSettings.Players.Invulnerability = false; } else { MainSettings.Players.Invulnerability = true; }
@@ -150,10 +155,21 @@ public class PlayerController : MonoBehaviour
 
 
 
-    void CreateNotMainShot(GameObject weapon, Vector3 pos, Vector3 rot) //translating 'pooled' lazer shot to the defined position in the defined rotation
+    void CreateNotMainShot(string obj, Vector3 pos, Vector3 rot)
     {
-        GameObject go = Instantiate(weapon, pos, Quaternion.Euler(rot));
+        PoolManager.GetObject(obj, pos, Quaternion.Euler(rot));
     }
+
+
+
+    //private void Fire()
+    //{
+    //    Gameobject bullet = PoolManager.GetObject(bulletPrefab.name, shotPoint.position, myTransform.rotation);
+    //}
+
+
+
+
 
     #region Main weapon Autoshot
     private IEnumerator LaserShot()
@@ -165,40 +181,43 @@ public class PlayerController : MonoBehaviour
                 switch (MainSettings.Players.LaserPower)
                 {
                     case 0:
-                        Instantiate(Laser, new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        //Instantiate(Laser, new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
                         break;
                     case 1:
-                        Instantiate(Laser, new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        //Instantiate(Laser, new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        //Instantiate(Laser, new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
                         break;
                     case 2:
-                        Instantiate(Laser, new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
                         break;
                     case 3:
-                        Instantiate(Laser, new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
                         break;
                     case 4:
-                        Instantiate(Laser, new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-70, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-110, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-70, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-110, 90, 0)));
                         break;
                     case 5:
-                        Instantiate(Laser, new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-70, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-110, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-60, 90, 0)));
-                        Instantiate(Laser, new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-120, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 0.8f, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-90, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-80, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y, transform.position.z + 5), Quaternion.Euler(new Vector3(-100, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-70, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-110, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x + 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-60, 90, 0)));
+                        PoolManager.GetObject("LaserShot", new Vector3(transform.position.x - 1, transform.position.y - 1, transform.position.z + 5), Quaternion.Euler(new Vector3(-120, 90, 0)));
                         break;
                 }
             }

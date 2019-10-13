@@ -6,6 +6,8 @@ using UnityEngine.UI;
 static public class MainSettings
 {
     static public GameObject PausePanel { get; set; }
+    static public UIBossHP BossUIHPPanel { get; set; }
+    static public GameObject BossHPPanel { get; set; }
     static private bool notPause = false;
     static public bool NotPause
     {
@@ -38,7 +40,7 @@ static public class MainSettings
 
         static public GameObject Player { get; set; }
         static public float HitPoint { get; set; }
-
+        static public bool UnLockController = false;
         static public GameObject InvulnerabilityObject { get; set; }
         static private bool invulnerability = false;
         static public bool Invulnerability
@@ -65,6 +67,7 @@ static public class MainSettings
         #region MainWeapon
         static public bool Autoshot { get; set; }
         static private int laserPower = 0;
+        static public int laserDamage = 5;
         static public int LaserPower
         {
             get { return laserPower; }
@@ -138,19 +141,25 @@ static public class MainSettings
 
     static public class Weapon
     {
+        static Weapon()
+        {
+            Rocket.Damage = 100;
+            Bomb.Damage = 500;
+            Bomb.Diameter = 10;
+        }
         static public class Rocket
         {
 
             static public int MaxCount { get; set; }
             static public int Count { get; set; }
-            static public float Damage { get; set; }
+            static public int Damage { get; set; }
             static public float Speed { get; set; }
         }
         static public class Bomb
         {
             static public bool Infinity { get; set; }
             static public int Count { get; set; }
-            static public float Damage { get; set; }
+            static public int Damage { get; set; }
             private static float diameter = 10;
             static public float Diameter
             {
@@ -177,4 +186,10 @@ static public class MainSettings
 
 
     }
+
+
+    //static public class Enemys
+    //{
+    //    static public List<>
+    //}
 }

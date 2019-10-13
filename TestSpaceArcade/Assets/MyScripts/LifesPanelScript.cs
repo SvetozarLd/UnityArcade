@@ -5,12 +5,10 @@ using UnityEngine;
 public class LifesPanelScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject LifesPrefab;
     public float WidthSize = 60;
     public float SpeedAnimation = 1;
     public Vector3 StartPosition;
     public Vector3 RotatePosition;
-    public GameObject Explosion;
 
     private List<GameObject> lifes = new List<GameObject>();
     void Start()
@@ -53,11 +51,13 @@ public class LifesPanelScript : MonoBehaviour
                 if (i > 0)
                 {
                     GameObject needDelete = lifes[i - 1];
-                    GameObject go = Instantiate(Explosion, needDelete.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                    //GameObject go = Instantiate(Explosion, needDelete.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                    GameObject go = PoolManager.GetObject("ExplosionSmallUI", StartPosition, Quaternion.identity);
                     go.transform.parent = gameObject.transform;
                     go.transform.position = needDelete.transform.position;
+                    //go.transform.localScale = new Vector3(4,4,4);
                     lifes.RemoveAt(i - 1);
-                    Destroy(needDelete, 0);
+                    needDelete.transform.GetComponent<PoolObject>().ReturnToPool();
                 }
             }
             yield return null;
@@ -66,7 +66,8 @@ public class LifesPanelScript : MonoBehaviour
 
     private void CreateLife(Vector3 newPosition)
     {
-        GameObject go = Instantiate(LifesPrefab, StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+        //GameObject go = Instantiate(LifesPrefab, StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+        GameObject go = PoolManager.GetObject("LifePrefab", StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
         go.transform.parent = gameObject.transform;
         LifesScript cmp = go.transform.GetComponent<LifesScript>();
         cmp.Position = newPosition;
