@@ -140,10 +140,6 @@
     <None Include="Assets\JMO Assets\WarFX\!WarFX Readme.txt" />
     <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Particle Add A8.shader" />
-    <None Include="Assets\ResultWebGL\Build\ResultWebGL.data.unityweb" />
-    <None Include="Assets\ResultWebGL\Build\ResultWebGL.json" />
-    <None Include="Assets\ResultWebGL\Build\ResultWebGL.wasm.code.unityweb" />
-    <None Include="Assets\ResultWebGL\Build\ResultWebGL.wasm.framework.unityweb" />
     <None Include="Assets\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\JMO Assets\Cartoon FX Easy Editor\CartoonFX Easy Editor Readme.txt" />
     <None Include="Assets\JMO Assets\WarFX\_Effects (Mobile)\MuzzleFlashes\!MuzzleFlash Differences.txt" />
@@ -153,6 +149,7 @@
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Multiply Soft.shader" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Alpha-Diffuse TintColor.shader" />
     <None Include="Assets\Detonator Explosion Framework\Resources\Detonator\Textures\HeatDistort.shader" />
+    <None Include="ResultWin.zip" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Work/TestSpaceArcade/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -749,21 +746,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="Assets\ResultWebGL\Build\UnityLoader.js" />
-    <Content Include="Assets\ResultWebGL\index.html" />
-    <Content Include="Assets\ResultWebGL\TemplateData\favicon.ico" />
-    <Content Include="Assets\ResultWebGL\TemplateData\fullscreen.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressEmpty.Dark.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressEmpty.Light.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressFull.Dark.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressFull.Light.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressLogo.Dark.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\progressLogo.Light.png" />
-    <Content Include="Assets\ResultWebGL\TemplateData\style.css" />
-    <Content Include="Assets\ResultWebGL\TemplateData\UnityProgress.js" />
-    <Content Include="Assets\ResultWebGL\TemplateData\webgl-logo.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
