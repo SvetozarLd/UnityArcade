@@ -101,7 +101,6 @@
     <Compile Include="Assets\MyScripts\EnemyShotScript.cs" />
     <Compile Include="Assets\MyScripts\EnemyStats.cs" />
     <Compile Include="Assets\MyScripts\EnemyTrajectory.cs" />
-    <Compile Include="Assets\MyScripts\LaserScript.cs" />
     <Compile Include="Assets\MyScripts\lasershoot.cs" />
     <Compile Include="Assets\MyScripts\MainSettings.cs" />
     <Compile Include="Assets\MyScripts\MoveToPlayer.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Assets\MyScripts\RotateUpfrade.cs" />
     <Compile Include="Assets\MyScripts\ScenarioScript.cs" />
     <Compile Include="Assets\MyScripts\UIScores.cs" />
-    <Compile Include="Assets\MyScripts\UIStats.cs" />
     <Compile Include="Assets\MyScripts\UpgradeSphere.cs" />
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
