@@ -11,19 +11,10 @@ public class BossesStats : MonoBehaviour
         enemyStats = transform.parent.transform.GetComponent<EnemyStats>();
         Maxim = enemyStats.HP;
     }
-    //// Start is called before the first frame update
-    //void Start()
-    //{
 
-    //}
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("BOSS"+ other.name);
+        enemyStats.TriggerEntered(other);
         MainSettings.BossUIHPPanel.SetHP(Maxim, enemyStats.HP);
     }
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4984279217527058436}
   - component: {fileID: 3966328330019460959}
   - component: {fileID: 7570064195568474712}
+  - component: {fileID: 6749238041954781952}
   m_Layer: 0
   m_Name: EnemyDroids
   m_TagString: Enemy
@@ -48,7 +49,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   Scores: 50
-  Explosion: {fileID: 100006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
 --- !u!114 &3966328330019460959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +82,18 @@ MonoBehaviour:
   RightUpCorner: {x: 30, y: 13}
   Steps: 100
   TimeFreezing: 2
+--- !u!114 &6749238041954781952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4984279217527058437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &8266798868996205506
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -95,6 +107,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 1.8}
+--- !u!114 &1820393941853835968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4984279218080040986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51fc7be4367fc84a804cec44791d941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4984279218079944378
 PrefabInstance:
   m_ObjectHideFlags: 0

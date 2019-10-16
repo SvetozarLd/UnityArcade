@@ -13,14 +13,14 @@ public class LifesPanelScript : MonoBehaviour
     private List<GameObject> lifes = new List<GameObject>();
     void Start()
     {
-        MainSettings.Players.LifesPanel = gameObject.GetComponent<LifesPanelScript>();
+        MainSettings.Lifes.UIPanel = gameObject.GetComponent<LifesPanelScript>();
         StartCoroutine(StartingAnim());
     }
 
     private IEnumerator StartingAnim()
     {
         Vector3 tmp = StartPosition;
-        for (int i = 0; i < MainSettings.Players.LifeCount; i++)
+        for (int i = 0; i < MainSettings.Lifes.Count; i++)
         {
             while (!MainSettings.NotPause) { yield return null; }
             CreateLife(new Vector3(StartPosition.x + (WidthSize * i), StartPosition.y, StartPosition.z));
@@ -36,45 +36,45 @@ public class LifesPanelScript : MonoBehaviour
 
     private IEnumerator changeLifeCount()
     {
-        Vector3 tmp = StartPosition;
-        int i = 0;
-        while (lifes.Count != MainSettings.Players.LifeCount)
-        {
-            while (!MainSettings.NotPause) { yield return null; }
-            i = lifes.Count;
-            if (lifes.Count < MainSettings.Players.LifeCount)
+            Vector3 tmp = StartPosition;
+            int i = 0;
+            while (lifes.Count != MainSettings.Lifes.Count)
             {
-                CreateLife(new Vector3(StartPosition.x + (WidthSize * i), StartPosition.y, StartPosition.z));
-            }
-            else
-            {
-                if (i > 0)
+                while (!MainSettings.NotPause) { yield return null; }
+                i = lifes.Count;
+                if (lifes.Count < MainSettings.Lifes.Count)
                 {
-                    GameObject needDelete = lifes[i - 1];
-                    //GameObject go = Instantiate(Explosion, needDelete.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                    GameObject go = PoolManager.GetObject("ExplosionSmallUI", StartPosition, Quaternion.identity);
-                    go.transform.parent = gameObject.transform;
-                    go.transform.position = needDelete.transform.position;
-                    //go.transform.localScale = new Vector3(4,4,4);
-                    lifes.RemoveAt(i - 1);
-                    needDelete.transform.GetComponent<PoolObject>().ReturnToPool();
+                    CreateLife(new Vector3(StartPosition.x + (WidthSize * i), StartPosition.y, StartPosition.z));
                 }
+                else
+                {
+                    if (i > 0)
+                    {
+                        GameObject needDelete = lifes[i - 1];
+                        GameObject go = MainSettings.CurPoolManager.GetObject("ExplosionSmallUI", StartPosition, Quaternion.identity);
+                        go.transform.parent = gameObject.transform;
+                        go.transform.position = needDelete.transform.position;
+                        lifes.RemoveAt(i - 1);
+                        needDelete.transform.GetComponent<PoolObject>().ReturnToPool();
+                    }
+                }
+                yield return null;
             }
-            yield return null;
-        }
     }
 
     private void CreateLife(Vector3 newPosition)
     {
-        //GameObject go = Instantiate(LifesPrefab, StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
-        GameObject go = PoolManager.GetObject("LifePrefab", StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
-        go.transform.parent = gameObject.transform;
-        LifesScript cmp = go.transform.GetComponent<LifesScript>();
-        cmp.Position = newPosition;
-        cmp.Rotation = RotatePosition;
-        cmp.Speed = SpeedAnimation;
-        lifes.Add(go);
-        cmp.StartAnimation();
+        GameObject go = MainSettings.CurPoolManager.GetObject("LifePrefab", StartPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+        if (go != null)
+        {
+            go.transform.parent = gameObject.transform;
+            LifesScript cmp = go.transform.GetComponent<LifesScript>();
+            cmp.Position = newPosition;
+            cmp.Rotation = RotatePosition;
+            cmp.Speed = SpeedAnimation;
+            lifes.Add(go);
+            cmp.StartAnimation();
+        }
     }
 
 }

@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public static class PoolManager
+public class PoolManager
 {
-    private static PoolPart[] pools;
-    private static GameObject objectsParent;
+    private PoolPart[] pools;
+    private GameObject objectsParent;
 
     [System.Serializable]
     public struct PoolPart
@@ -16,7 +16,7 @@ public static class PoolManager
         public ObjectPooling ferula;
     }
 
-    public static void Initialize(PoolPart[] newPools)
+    public void Initialize(PoolPart[] newPools)
     {
         pools = newPools;
         objectsParent = new GameObject();
@@ -32,7 +32,7 @@ public static class PoolManager
     }
 
 
-    public static GameObject GetObject(string name, Vector3 position, Quaternion rotation)
+    public GameObject GetObject(string name, Vector3 position, Quaternion rotation)
     {
         GameObject result = null;
         if (pools != null)

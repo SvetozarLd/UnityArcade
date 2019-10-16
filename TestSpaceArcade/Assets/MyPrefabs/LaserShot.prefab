@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 728548873219367190}
   - component: {fileID: 2080644302}
-  - component: {fileID: 5476083459071486414}
   - component: {fileID: 1314288380}
   - component: {fileID: 1767924194}
+  - component: {fileID: -4540262295116951816}
   m_Layer: 0
   m_Name: LaserShot
   m_TagString: Weapon
@@ -47,19 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca95172080db46438edb4b6ee2b6c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5476083459071486414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2768810496951710990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af62ab3908b1c99439d17cbda16dcc9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Explosion: {fileID: 100014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
 --- !u!65 &1314288380
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,6 +76,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 72
   m_CollisionDetection: 0
+--- !u!114 &-4540262295116951816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768810496951710990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1647079442768424721
 PrefabInstance:
   m_ObjectHideFlags: 0

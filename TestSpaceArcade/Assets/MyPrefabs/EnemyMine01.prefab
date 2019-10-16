@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &7829714192465464636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7775468784311935110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51fc7be4367fc84a804cec44791d941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8353168670361774950
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,6 +23,7 @@ GameObject:
   - component: {fileID: 2812888942434760053}
   - component: {fileID: 9138107291910304849}
   - component: {fileID: 2101954459744623230}
+  - component: {fileID: 4693461231327193241}
   m_Layer: 0
   m_Name: EnemyMine01
   m_TagString: Enemy
@@ -46,7 +59,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Trajectory: 0
-  Player: {fileID: 0}
   speed: 1
 --- !u!114 &2101954459744623230
 MonoBehaviour:
@@ -61,8 +73,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 300
-  Scores: 5
-  Explosion: {fileID: 100006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+  Scores: 50
+--- !u!114 &4693461231327193241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353168670361774950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7776502878010994914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,6 +152,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f7d5f60379571b4ab916f85aae80a71, type: 3}
+--- !u!1 &7775468784311935110 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1041803199959140, guid: 5f7d5f60379571b4ab916f85aae80a71,
+    type: 3}
+  m_PrefabInstance: {fileID: 7776502878010994914}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7781014175580765874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4511299184676432, guid: 5f7d5f60379571b4ab916f85aae80a71,

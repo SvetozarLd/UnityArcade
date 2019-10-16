@@ -7,7 +7,7 @@ public class UIRocket : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MainSettings.Players.RocketText = GetComponent<Text>();
-        MainSettings.Players.RocketText.text = MainSettings.Players.RocketCount.ToString("00");
+        MainSettings.Weapon.Rocket.UIText = GetComponent<Text>();
+        MainSettings.Weapon.Rocket.UIText.text = MainSettings.Weapon.Rocket.Count.ToString("00");
     }
 }

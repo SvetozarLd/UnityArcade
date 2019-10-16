@@ -17,10 +17,7 @@ public class lasershoot : MonoBehaviour
         switch (collider.gameObject.tag)
         {
             case "Enemy":
-                //EnemyStats es= collider.transform.parent.gameObject.GetComponent<EnemyStats>();
-                //es.HP -= 10;
-                //if (es.HP > 0){PoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity);}
-                PoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity);
+                MainSettings.CurPoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity);
                 po.ReturnToPool();
                 break;
         }

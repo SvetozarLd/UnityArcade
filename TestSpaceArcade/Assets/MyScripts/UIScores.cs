@@ -7,7 +7,7 @@ public class UIScores : MonoBehaviour
 {
     private void Start()
     {
-        MainSettings.Players.ScoresText = GetComponent<Text>();
-        MainSettings.Players.ScoresText.text = MainSettings.Players.Scores.ToString();
+        MainSettings.Score.UIText = GetComponent<Text>();
+        MainSettings.Score.UIText.text = MainSettings.Score.Scores.ToString();
     }
 }

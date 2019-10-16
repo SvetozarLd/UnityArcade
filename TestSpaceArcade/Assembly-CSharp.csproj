@@ -149,6 +149,7 @@
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Multiply Soft.shader" />
     <None Include="Assets\JMO Assets\WarFX\Shaders\WFX_S Alpha-Diffuse TintColor.shader" />
     <None Include="Assets\Detonator Explosion Framework\Resources\Detonator\Textures\HeatDistort.shader" />
+    <None Include="ResultWebGL.zip" />
     <None Include="ResultWin.zip" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Work/TestSpaceArcade/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

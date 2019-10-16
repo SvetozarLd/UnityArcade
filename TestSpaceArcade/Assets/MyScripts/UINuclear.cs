@@ -7,8 +7,8 @@ public class UINuclear : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MainSettings.Players.NuclearText = GetComponent<Text>();
-        MainSettings.Players.NuclearText.text = MainSettings.Players.NuclearCount.ToString("00");
+        MainSettings.Weapon.Bomb.UIText = GetComponent<Text>();
+        MainSettings.Weapon.Bomb.UIText.text = MainSettings.Weapon.Bomb.Count.ToString("00");
     }
 
 }

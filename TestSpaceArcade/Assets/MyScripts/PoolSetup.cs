@@ -3,7 +3,7 @@ using System.Collections;
 
 [AddComponentMenu("Pool/PoolSetup")]
 public class PoolSetup : MonoBehaviour
-{//обертка для управления статическим классом PoolManager
+{
 
     //#region Unity scene settings
     [SerializeField] private PoolManager.PoolPart[] pools;
@@ -25,7 +25,8 @@ public class PoolSetup : MonoBehaviour
 
     void Initialize()
     {
-        PoolManager.Initialize(pools);
+        if (MainSettings.CurPoolManager == null) { MainSettings.CurPoolManager = new PoolManager(); }
+        MainSettings.CurPoolManager.Initialize(pools);
     }
     #endregion
 }

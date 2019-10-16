@@ -1,17 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-static public class MainSettings
+public static class MainSettings
 {
-    static public GameObject PausePanel { get; set; }
-    static public UIBossHP BossUIHPPanel { get; set; }
-    static public GameObject BossHPPanel { get; set; }
-    static private bool notPause = false;
-    static public bool NotPause
+    static MainSettings()
     {
-        get { return notPause; }
+        SetDefaultSettings();
+    }
+
+    public static GameObject PausePanel { get; set; }
+    public static UIBossHP BossUIHPPanel { get; set; }
+    private static bool notPause = false;
+    public static PoolManager CurPoolManager { get; set; }
+
+    public static bool NotPause
+    {
+        get => notPause;
         set
         {
             notPause = value;
@@ -24,172 +29,204 @@ static public class MainSettings
 
 
 
-    static public List<GameObject> Enemylist = new List<GameObject>();
-    static public Camera MainCamera { get; set; }
+    public static List<GameObject> Enemylist = new List<GameObject>();
+    public static Camera MainCamera { get; set; }
 
 
 
-    static public class Players
+    public static class Players
     {
-        static Players()
+        public static GameObject Player { get; set; }
+        public static int HitPoint = 0;
+        public static int Damage = 1000;
+        public static bool UnLockController = false;
+        public static GameObject InvulnerabilityObject { get; set; }
+        private static bool invulnerability = false;
+        public static bool Invulnerability
         {
-            if (MaxLifeCount == 0) { MaxLifeCount = 10; }
-            if (MaxRocketCount == 0) { MaxRocketCount = 10; }
-            if (MaxNuclearCount == 0) { MaxNuclearCount = 5; }
+            get => invulnerability;
+            set { invulnerability = value; if (InvulnerabilityObject != null) { InvulnerabilityObject.SetActive(value); } }
         }
+    }
 
-        static public GameObject Player { get; set; }
-        static public float HitPoint { get; set; }
-        static public bool UnLockController = false;
-        static public GameObject InvulnerabilityObject { get; set; }
-        static private bool invulnerability = false;
-        static public bool Invulnerability
+    #region Scores
+    public static class Score
+    {
+        public static Text UIText { get; set; }
+        private static long scores { get; set; }
+        public static long Scores
         {
-            get { return invulnerability; }
+            get => scores;
             set
             {
-                invulnerability = value;
-                if (InvulnerabilityObject != null)
-                    if (invulnerability)
-                    {
-                        InvulnerabilityObject.SetActive(true);
-                        //Player.transform.GetChild(0).gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        InvulnerabilityObject.SetActive(false);
-                        //Player.transform.GetChild(0).gameObject.SetActive(false);
-                    }
-            }
-        }
-
-
-        #region MainWeapon
-        static public bool Autoshot { get; set; }
-        static private int laserPower = 0;
-        static public int laserDamage = 5;
-        static public int LaserPower
-        {
-            get { return laserPower; }
-            set { if (value >= 0 && value < 7) { laserPower = value; } }
-        }
-        #endregion
-
-        #region Lifes
-        static public LifesPanelScript LifesPanel { get; set; }
-        static public int MaxLifeCount { get; set; }
-        static private int lifeCount = 5;
-        static public int LifeCount
-        {
-            get { return lifeCount; }
-            set
-            {
-                if (value <= MaxLifeCount) { lifeCount = value; }
-                if (LifesPanel != null) { LifesPanel.ChangeLifeCount(); }
-            }
-
-        }
-        #endregion
-
-        #region Scores
-        static public Text ScoresText { get; set; }
-        static private long scores { get; set; }
-        static public long Scores
-        {
-            get { return scores; }
-            set
-            {
+                BonusCheck((int)(value - scores));
                 scores = value;
-                if (ScoresText != null) { ScoresText.text = "Scores:" + scores.ToString(); }
+                if (UIText != null) { UIText.text = "Scores:" + scores.ToString(); }                
             }
         }
-        #endregion
 
-        #region Rockets
-        static public Text RocketText { get; set; }
-        static public int MaxRocketCount { get; set; }
-        static private int rocketCount = 0;
-        static public int RocketCount
+        static private void BonusCheck(int tmp)
         {
-            get { return rocketCount; }
-            set
-            {
-                if (value <= MaxRocketCount && value >= 0) { rocketCount = value; }
-                if (RocketText != null) { RocketText.text = rocketCount.ToString("00"); }
-            }
-
+            BonusLife += tmp;
+            BonusMainWeapon += tmp;
+            BonusRocket += tmp;
+            BonusBomb += tmp;
+            if (BonusLife > Lifes.CurrentBonus) { BonusLife -= Lifes.CurrentBonus; Players.Player.GetComponent<PlayerController>().Bonus(AddBonusScript.BonusType.Life); }
+            if (BonusMainWeapon > Weapon.MainWeapon.CurrentBonus) { BonusMainWeapon -= Weapon.MainWeapon.CurrentBonus; Players.Player.GetComponent<PlayerController>().Bonus(AddBonusScript.BonusType.MainWeapon); }
+            if (BonusRocket > Weapon.Rocket.CurrentBonus) { BonusRocket -= Weapon.Rocket.CurrentBonus; Players.Player.GetComponent<PlayerController>().Bonus(AddBonusScript.BonusType.Rocket); }
+            if (BonusBomb > Weapon.Bomb.CurrentBonus) { BonusBomb -= Weapon.Bomb.CurrentBonus; Players.Player.GetComponent<PlayerController>().Bonus(AddBonusScript.BonusType.Nuclear); }
         }
-        #endregion
-
-        #region Nuclear
-        static public Text NuclearText { get; set; }
-        static public int MaxNuclearCount { get; set; }
-        static private int nuclearCount = 0;
-        static public int NuclearCount
-        {
-            get { return nuclearCount; }
-            set
-            {
-                if (value <= MaxNuclearCount && value >= 0) { nuclearCount = value; }
-                if (NuclearText != null) { NuclearText.text = nuclearCount.ToString("00"); }
-            }
-
-        }
-        #endregion
-
+        static public int BonusLife = 0;
+        static public int BonusMainWeapon = 0;
+        static public int BonusRocket = 0;
+        static public int BonusBomb = 0;
     }
+    #endregion
 
-    static public class Weapon
+    #region Lifes
+    public static class Lifes
     {
-        static Weapon()
+        public static LifesPanelScript UIPanel { get; set; }
+        public static int MaxCount { get; set; }
+        private static int count = 5;
+        public static int Count
         {
-            Rocket.Damage = 100;
-            Bomb.Damage = 500;
-            Bomb.Diameter = 10;
-        }
-        static public class Rocket
-        {
-
-            static public int MaxCount { get; set; }
-            static public int Count { get; set; }
-            static public int Damage { get; set; }
-            static public float Speed { get; set; }
-        }
-        static public class Bomb
-        {
-            static public bool Infinity { get; set; }
-            static public int Count { get; set; }
-            static public int Damage { get; set; }
-            private static float diameter = 10;
-            static public float Diameter
+            get => count;
+            set
             {
-                get { return diameter; }
-                set { diameter = value; }
-            }
-            private static float speed = 10;
-            static public float Speed
-            {
-                get { return speed; }
-                set { speed = value; }
-            }
-            private static float size = 0.4f;
-            static public float Size
-            {
-                get { return size; }
-                set { size = value; }
+                if (value <= MaxCount) { count = value; CurrentBonus = (int)(count * ScoresBonus * ScoresBonusRatio) + ScoresBonus; }
+                if (UIPanel != null) { UIPanel.ChangeLifeCount(); }
             }
         }
-        static public class GuiSet
-        {
-            static public int LifeCount { get; set; }
-        }
-
-
+        public static int ScoresBonus = 100;
+        public static float ScoresBonusRatio = 2f;
+        public static int CurrentBonus = 0;
     }
+    #endregion
+
+    #region Weapon
+    public static class Weapon
+    {
+        #region MainWeapon
+        public static class MainWeapon
+        {
+            public static bool Autoshot { get; set; }
+            private static int power = 0;
+            public static int Damage = 5;
+            public static int Power
+            {
+                get { return power; }
+                set
+                {
+                    if (value >= 0 && value < 6)
+                    {
+                        power = value;
+                        CurrentBonus = (int)(power * ScoresBonus * ScoresBonusRatio) + ScoresBonus;
+                    }
+                }
+            }
+
+            public static int ScoresBonus = 50;
+            public static float ScoresBonusRatio = 1.5f;
+            public static int CurrentBonus = 0;
+        }
+        #endregion
+        #region Rockets
+        public static class Rocket
+        {
+            public static int Damage = 100;
+            public static float Speed = 15f;
+            public static Text UIText { get; set; }
+            public static int MaxCount { get; set; }
+            private static int count = 0;
+            public static int Count
+            {
+                get => count;
+                set
+                {
+                    if (value <= MaxCount && value >= 0) { count = value; CurrentBonus = (int)(count * ScoresBonus * ScoresBonusRatio) + ScoresBonus ; }
+                    if (UIText != null) { UIText.text = count.ToString("00"); }
+                }
+
+            }
+
+            public static int ScoresBonus = 150;
+            public static float ScoresBonusRatio = 1f;
+            public static int CurrentBonus = 0;
+        }
+        #endregion
+        #region Nuclear
+        public static class Bomb
+        {
+            public static int Damage = 500;
+            public static float Diameter = 10;
+            public static float Speed = 10f;
+            public static float Size = 0.4f;
+
+            public static Text UIText { get; set; }
+            public static int MaxCount { get; set; }
+            private static int count = 0;
+            public static int Count
+            {
+                get => count;
+                set
+                {
+                    if (value <= MaxCount && value >= 0) { count = value; CurrentBonus = (int)(count * ScoresBonus * ScoresBonusRatio) + ScoresBonus; }
+                    if (UIText != null) { UIText.text = count.ToString("00"); }
+                }
+
+            }
+
+            public static int ScoresBonus = 200;
+            public static float ScoresBonusRatio = 1.5f;
+            public static int CurrentBonus = 0;
+        }
+        #endregion
+    }
+    #endregion
+    #region Reset
+    public static void SetDefaultSettings()
+    {
+        notPause = false;
+        PausePanel = null;
+        BossUIHPPanel = null;
+        CurPoolManager = null;
+        CurPoolManager = new PoolManager();
+        if (Enemylist != null) { Enemylist.Clear(); }
+        Enemylist = new List<GameObject>();
+        MainCamera = null;
+
+        Players.Player = null;
+        Players.HitPoint = 0;
+        Players.Damage = 1000;
+        Players.UnLockController = false;
+        Players.InvulnerabilityObject = null;
+        Players.Invulnerability = true;
 
 
-    //static public class Enemys
-    //{
-    //    static public List<>
-    //}
+        Weapon.MainWeapon.Autoshot = false;
+        Weapon.MainWeapon.Damage = 5;
+        Weapon.MainWeapon.Power = 0;
+
+        Lifes.UIPanel = null;
+        Lifes.MaxCount = 10;
+        Lifes.Count = 5;
+
+
+        Score.UIText = null;
+        Score.Scores = 0;
+        Score.BonusLife = 0;
+        Score.BonusMainWeapon = 0;
+        Score.BonusRocket = 0;
+        Score.BonusBomb = 0;
+
+        Weapon.Rocket.UIText = null;
+        Weapon.Rocket.MaxCount = 10;
+        Weapon.Rocket.Count = 5;
+
+        Weapon.Bomb.UIText = null;
+        Weapon.Bomb.MaxCount = 5;
+        Weapon.Bomb.Count = 1;
+    }
+    #endregion
 }

@@ -20,7 +20,14 @@ public class EnemyShotScript : MonoBehaviour
         transform.LookAt(new Vector3(Target.x, Target.y, transform.position.z));
     }
 
-     
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            if (MainSettings.Players.Invulnerability) { MainSettings.CurPoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity); }
+            po.ReturnToPool();
+        }
+    }
     // Update is called once per frame
     void Update()
     {

@@ -16,6 +16,7 @@ public class ScenarioScript : MonoBehaviour
     public GameObject Enemy07;
     public GameObject Enemy08;
     [Space]
+    public int EndGameCheckpoint;
 
     private int gamePosition = 0;
 
@@ -41,22 +42,8 @@ public class ScenarioScript : MonoBehaviour
 
     void Start()
     {
-        MainSettings.Players.Invulnerability = false;
-
         SingleEnemy en;
         List<SingleEnemy> lst;
-
-        //#region Creating Scenario2
-        //lst = new List<SingleEnemy>();
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    en = new SingleEnemy(Enemy01, 1f, 1, 0, 4, transform.position = new Vector3(Random.Range(-9, 10) * 3, 19, 0));
-        //    lst.Add(en);
-        //}
-        //Checkpoints.Add(395, new EnemyInstance(lst, true));
-        //#endregion
-
-
 
         #region Creating Scenario (sin center)
         lst = new List<SingleEnemy>();
@@ -89,14 +76,14 @@ public class ScenarioScript : MonoBehaviour
 
         #region Creating Scenario (bezie01 Left)
         lst = new List<SingleEnemy>();
-        en = new SingleEnemy(Enemy06, 0.25f, 20, 8, 4, new Vector3(15, 15, -5));
+        en = new SingleEnemy(Enemy06, 0.25f, 20, 10, 4, new Vector3(-30, 15, -5));
         lst.Add(en);
         Checkpoints.Add(360, new EnemyInstance(lst, true));
         #endregion
 
         #region Creating Scenario (bezie01 right)
         lst = new List<SingleEnemy>();
-        en = new SingleEnemy(Enemy07, 0.25f, 20, 8, 4, new Vector3(15, 15, -5));
+        en = new SingleEnemy(Enemy07, 0.25f, 20, 10, 4, new Vector3(30, 15, -5));
         lst.Add(en);
         Checkpoints.Add(350, new EnemyInstance(lst, true));
         #endregion
@@ -120,50 +107,20 @@ public class ScenarioScript : MonoBehaviour
         lst.Add(new SingleEnemy(Enemy05, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
         Checkpoints.Add(338, new EnemyInstance(lst, true));
         #endregion
+        #region Creating Scenario (droids)
 
-        //background = Background.gameObject.transform.Find("BackSpace01").gameObject;
+        lst = new List<SingleEnemy>();
+        //lst.Add(new SingleEnemy(Enemy04, 0f, 1, 6, 1, new Vector3(0, 15, -10)));
+        //lst.Add(new SingleEnemy(Enemy04, 0f, 1, 7, 1, new Vector3(0, 15, -10)));
+        lst.Add(new SingleEnemy(Enemy08, 0f, 1, 10, 1, new Vector3(0, 15, -10)));
+        Checkpoints.Add(325, new EnemyInstance(lst, true));
+        #endregion
+
         StartCoroutine(CheckPoints());
-
-        //#region Creating Scenario2
-
-        //lst = new List<SingleEnemy>();
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    en = new SingleEnemy(Enemy01, 1f, 1, 0, 4, transform.position = new Vector3(Random.Range(-9, 10) * 3, 19, 0));
-        //    lst.Add(en);
-        //}
-        //Checkpoints.Add(350, new EnemyInstance(lst, true));
-        //#endregion
-
-
-        //background = Background.gameObject.transform.Find("BackSpace01").gameObject;
         StartCoroutine(CheckPoints());
         MainSettings.NotPause = true;
-        MainSettings.Players.Autoshot = true;
-        //if (!MainSettings.Players.Autoshot)
-        //{
-        //    MainSettings.Players.Autoshot = true;
-        //    StartCoroutine(LaserShot());
-        //}
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        SingleEnemy en = new SingleEnemy(Enemy01, 0.15f, 10, 0, 1);
-    //        StartCoroutine(CreateEnemy(en));
-    //    }
-
-    //    //if (gamePosition == 390)
-    //    //{
-    //    //    StartCoroutine(CreateEnemy(Enemy01, 0.1f, 10, 0));
-    //    //}
-    //}
-
-    private float UpgradeTmp = 2;
-    private int laserUpgradesCount = 0;
     private IEnumerator CheckPoints()
     {
         while (true)
@@ -171,23 +128,23 @@ public class ScenarioScript : MonoBehaviour
             if (MainSettings.NotPause)
             {
                 gamePosition = Mathf.RoundToInt(Background.transform.position.y);
-                EnemyInstance item;
-                Checkpoints.TryGetValue(gamePosition, out item);
-                if (item != null && item.waiting)
+                if (gamePosition > EndGameCheckpoint)
                 {
-                    item.waiting = false;
-                    foreach (SingleEnemy en in item.enemyObj)
+                    EnemyInstance item;
+                    Checkpoints.TryGetValue(gamePosition, out item);
+                    if (item != null && item.waiting)
                     {
-                        StartCoroutine(CreateEnemy(en));
+                        item.waiting = false;
+                        foreach (SingleEnemy en in item.enemyObj)
+                        {
+                            StartCoroutine(CreateEnemy(en));
+                        }
                     }
                 }
-                //UpgradeTmp = MainSettings.Players.Scores / 100;
-                ////Debug.Log(MainSettings.Players.Scores + ":"+ TakeUpgrade.ToString() + ":"+TakeUpgradeTmp.ToString());
-                //if (UpgradeTmp > laserUpgradesCount)
-                //{
-                //    GameObject go = Instantiate(LaserUP, new Vector3(Random.Range(-20, 20), 15, 20), Quaternion.Euler(0, 0, 0));
-                //    laserUpgradesCount++;
-                //}
+                else
+                {
+                    MainSettings.Lifes.Count = -1;
+                }
             }
             yield return null;
         }
@@ -199,24 +156,24 @@ public class ScenarioScript : MonoBehaviour
         for (int i = 0; i < enemy.count; i++)
         {
             while (!MainSettings.NotPause) { yield return null; }
-            //GameObject go = Instantiate(enemy.enemyObj, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            GameObject go = PoolManager.GetObject(enemy.enemyObj.name, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            component = go.transform.GetComponent<EnemyTrajectory>();
-            if (component != null)
+            GameObject go = MainSettings.CurPoolManager.GetObject(enemy.enemyObj.name, enemy.selfPosition, Quaternion.Euler(0, 0, 0));
+            if (go != null)
             {
-                component.Trajectory = enemy.trajectory;
-                component.speed = enemy.speed;
-                go.transform.position = enemy.selfPosition;
-                MainSettings.Enemylist.Add(go);
-                yield return new WaitForSeconds(enemy.timeDelay);
-            }
-            else
-            {
-                MainSettings.Enemylist.Remove(go);
-                go.GetComponent<PoolObject>().ReturnToPool();
-                yield break;
+                component = go.transform.GetComponent<EnemyTrajectory>();
+                if (component != null)
+                {
+                    component.Trajectory = enemy.trajectory;
+                    component.speed = enemy.speed;
+                    MainSettings.Enemylist.Add(go);
+                    yield return new WaitForSeconds(enemy.timeDelay);
+                }
+                else
+                {
+                    MainSettings.Enemylist.Remove(go);
+                    go.GetComponent<PoolObject>().ReturnToPool();
+                    yield break;
+                }
             }
         }
     }
-
 }

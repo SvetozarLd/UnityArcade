@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BombScript : MonoBehaviour
 {
-    //public GameObject 
     private float speed;
     private float radius;
     private Camera mainCamera;
@@ -31,7 +30,7 @@ public class BombScript : MonoBehaviour
             case "Enemy":
                 if (!ended)
                 {
-                    CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
+                    StartCoroutine(CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0)));
                 }
                 break;
         }
@@ -41,22 +40,22 @@ public class BombScript : MonoBehaviour
     {
         if (MainSettings.NotPause)
         {
+            transform.position += transform.forward * Time.deltaTime * speed;
             Vector3 point = mainCamera.WorldToViewportPoint(new Vector2(transform.position.x, transform.position.y + radius)); //Записываем положение объекта к границам камеры, X и Y это будут как раз верхние и нижние границы камеры
             if (point.y >= 1f)
             {
                 if (!ended)
                 {
-                    CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0));
+                    StartCoroutine(CreateExplosion("ExplosionBig", new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(-90, 0, 0)));
                 }
             }
-            else { transform.position += transform.forward * Time.deltaTime * speed; }
         }
     }
-    void CreateExplosion(string explosion, Vector3 pos, Vector3 rot) //translating 'pooled' lazer shot to the defined position in the defined rotation
+
+    IEnumerator CreateExplosion(string explosion, Vector3 pos, Vector3 rot)
     {
         ended = true;
-        po.ReturnToPool();
-        PoolManager.GetObject("ExplosionBig", transform.position, Quaternion.identity);
+
         if (MainSettings.Enemylist != null)
         {
             GameObject[] lst = MainSettings.Enemylist.ToArray();
@@ -67,8 +66,12 @@ public class BombScript : MonoBehaviour
                 {
                     tmp = goEnemy.GetComponent<EnemyStats>();
                     tmp.HP = tmp.HP - MainSettings.Weapon.Bomb.Damage;
+                    tmp.CheckHP();
                 }
+                yield return null;
             }
         }
+        po.ReturnToPool();
+        MainSettings.CurPoolManager.GetObject("ExplosionBig", transform.position, Quaternion.identity);
     }
 }

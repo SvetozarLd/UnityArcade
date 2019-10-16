@@ -14,7 +14,7 @@ public class DroneScript : MonoBehaviour
 
     private void Awake()
     {
-        Player = MainSettings.Players.Player;
+        //Player = MainSettings.Players.Player;
         bezie = new Bezie();
     }
 
@@ -23,6 +23,10 @@ public class DroneScript : MonoBehaviour
         StartCoroutine(StartInitiate());
     }
 
+    private void OnEnable()
+    {
+        Player = MainSettings.Players.Player;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -110,7 +114,7 @@ public class DroneScript : MonoBehaviour
             yield return new WaitForSeconds(TimeFreezing / 4);
             //GameObject go = Instantiate(ShotBullet, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
             //GameObject go = PoolManager.GetObject(ShotBullet.transform.name, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
-            PoolManager.GetObject(ShotBullet.transform.name, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
+            MainSettings.CurPoolManager.GetObject(ShotBullet.transform.name, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.Euler(0, 0, 0));
             //go.GetComponent<EnemyShotScript>().Target = new Vector2(Player.transform.position.x, Player.transform.position.y);
         }
     }

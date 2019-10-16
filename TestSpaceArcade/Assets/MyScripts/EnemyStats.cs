@@ -12,7 +12,7 @@ public class EnemyStats : MonoBehaviour
     void Awake()
     {
         po = GetComponent<PoolObject>();
-        hp = HP;
+        hp = HP;        
     }
     void OnEnable()
     {
@@ -23,28 +23,32 @@ public class EnemyStats : MonoBehaviour
         switch (other.gameObject.name)
         {
             case "LaserShot":
-                HP = HP - MainSettings.Players.laserDamage;
+                HP = HP - MainSettings.Weapon.MainWeapon.Damage;
                 CheckHP();
                 break;
             case "MissleShot":
                 HP = HP - MainSettings.Weapon.Rocket.Damage;
                 CheckHP();
                 break;
-            case "Bomb":
-                HP = HP - MainSettings.Weapon.Bomb.Damage;
+            case "Player":
+                HP = HP - MainSettings.Players.Damage;
                 CheckHP();
                 break;
+                //case "Bomb":
+                //    HP = HP - MainSettings.Weapon.Bomb.Damage;
+                //    CheckHP();
+                //    break;
         }
     }
     // Update is called once per frame
-    private void CheckHP()
+    public void CheckHP()
     {
         if (HP <= 0)
         {
-            MainSettings.Enemylist.Remove(gameObject);
+            if (MainSettings.Enemylist.Contains(gameObject)) { MainSettings.Enemylist.Remove(gameObject); }
             po.ReturnToPool();
-            PoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity);
-            MainSettings.Players.Scores += Scores;
+            MainSettings.CurPoolManager.GetObject("ExplosionSmall", transform.position, Quaternion.identity);
+            MainSettings.Score.Scores += Scores;
         }
     }
 }

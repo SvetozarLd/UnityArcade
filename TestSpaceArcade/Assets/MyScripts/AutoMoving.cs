@@ -15,11 +15,6 @@ public class AutoMoving : MonoBehaviour
         Right
     }
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         if (MainSettings.NotPause)
@@ -39,7 +34,6 @@ public class AutoMoving : MonoBehaviour
                     transform.Translate(Vector3.left * speed * Time.deltaTime);
                     break;
             }
-
         }
     }
 }

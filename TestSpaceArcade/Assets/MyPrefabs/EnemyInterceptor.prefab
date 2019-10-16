@@ -13,6 +13,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1239911970168823118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6621524437726126645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51fc7be4367fc84a804cec44791d941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7776910229826075390
 GameObject:
   m_ObjectHideFlags: 0
@@ -24,6 +36,7 @@ GameObject:
   - component: {fileID: 2583978039059186870}
   - component: {fileID: 4699287450796998923}
   - component: {fileID: 3823545418047091578}
+  - component: {fileID: 5368221104052580439}
   m_Layer: 0
   m_Name: EnemyInterceptor
   m_TagString: Enemy
@@ -59,7 +72,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Trajectory: 0
-  Player: {fileID: 0}
   speed: 1
 --- !u!114 &3823545418047091578
 MonoBehaviour:
@@ -74,8 +86,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 5
-  Scores: 10
-  Explosion: {fileID: 100006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+  Scores: 5
+--- !u!114 &5368221104052580439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776910229826075390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6620662870842574923
 PrefabInstance:
   m_ObjectHideFlags: 0

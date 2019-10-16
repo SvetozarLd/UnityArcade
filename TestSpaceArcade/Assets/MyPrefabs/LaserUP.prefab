@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3640567105703859538}
   - component: {fileID: 755809749}
   - component: {fileID: 3164650563671236109}
+  - component: {fileID: 5420592780655548504}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Bonus
@@ -88,10 +89,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2257962203366204173}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.49999997
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3164650563671236109
 MonoBehaviour:
@@ -107,6 +108,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedX: 0.01
   speedY: 0
+--- !u!114 &5420592780655548504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2257962203366204173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6dd6a8688b00e24cb04e3a1b83ba020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bonus: 1
 --- !u!1 &5395135880265910349
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7399350771082026069}
   - component: {fileID: 556572767}
+  - component: {fileID: 7910118423942793464}
   m_Layer: 0
   m_Name: LaserUP
   m_TagString: Bonus
@@ -154,6 +169,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   Direction: 1
+--- !u!114 &7910118423942793464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5395135880265910349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8538320247798562493
 MonoBehaviour:
   m_ObjectHideFlags: 0

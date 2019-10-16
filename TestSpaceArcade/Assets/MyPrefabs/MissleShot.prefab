@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1252523306}
   - component: {fileID: 1252523305}
   - component: {fileID: 92059180}
+  - component: {fileID: 3655457143063921796}
   m_Layer: 0
   m_Name: MissleShot
   m_TagString: Weapon
@@ -76,7 +77,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traejtory: {fileID: 0}
-  Explosion: {fileID: 100014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
+--- !u!114 &3655457143063921796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487749625388691214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ab2bd3dbf125641a62560b510a7869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6951825294947635200
 PrefabInstance:
   m_ObjectHideFlags: 0

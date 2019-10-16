@@ -7,9 +7,7 @@ public class PlayerMissleAttack : MonoBehaviour
 {
 
     public GameObject Traejtory;
-    public float Speed = 15;
-
-
+    private float Speed;
     GameObject Player;
     GameObject enemy;
     GameObject childrenMesh;
@@ -19,32 +17,33 @@ public class PlayerMissleAttack : MonoBehaviour
     {
         po = GetComponent<PoolObject>();
         childrenMesh = transform.GetChild(0).gameObject;
+        Speed = MainSettings.Weapon.Rocket.Speed;
     }
     // Start is called before the first frame update
     void Start()
     {
         Player = MainSettings.Players.Player;
         enemy = null;
-        searcher = false;
-        StartCoroutine(EnemySelector());
-
     }
 
     private void OnEnable()
     {
+        searcher = false;
         enemy = null;
+        StartCoroutine(EnemySelector());
     }
     private void OnTriggerEnter(Collider collider)
     {
         switch (collider.gameObject.tag)
         {
             case "Enemy":
-                EnemyStats tmp = collider.transform.parent.gameObject.GetComponent<EnemyStats>();
-                tmp.HP = tmp.HP - MainSettings.Weapon.Rocket.Damage;
-                MainSettings.Enemylist.Remove(collider.transform.parent.gameObject);
+                //EnemyStats tmp = collider.transform.parent.gameObject.GetComponent<EnemyStats>();
+                //tmp.HP = tmp.HP - MainSettings.Weapon.Rocket.Damage;
+                //MainSettings.Enemylist.Remove(collider.transform.parent.gameObject);
                 enemy = null;
+                MainSettings.CurPoolManager.GetObject("ExplosionParticle", transform.position, Quaternion.identity);
                 po.ReturnToPool();
-                PoolManager.GetObject("ExplosionParticle", transform.position, Quaternion.identity);
+
                 break;
         }
     }
@@ -90,11 +89,8 @@ public class PlayerMissleAttack : MonoBehaviour
                     if (tmp < dist) { tgo = go; dist = tmp; }
                 }
             }
-            if (tgo != null)
-            {
-                enemy = tgo;
-                enemyStats = enemy.GetComponent<EnemyStats>();
-            }
+            enemy = tgo;
+            if (enemy != null) { enemyStats = enemy.GetComponent<EnemyStats>(); }
 
         }
         searcher = true;

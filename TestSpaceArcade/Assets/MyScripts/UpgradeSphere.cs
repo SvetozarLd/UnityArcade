@@ -16,7 +16,7 @@ public class UpgradeSphere : MonoBehaviour
     float offsetX = 0;
     float offsetY = 0;
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (MainSettings.NotPause)
         {
